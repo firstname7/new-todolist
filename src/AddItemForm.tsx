@@ -1,11 +1,11 @@
-import { ChangeEvent, KeyboardEvent, useState } from "react"
+import { ChangeEvent, KeyboardEvent, memo, useState } from "react"
 import s from "./Todolist.module.css"
 
 type AddItemFormsType = {
 	callBack: (title: string) => void
 }
 
-export const AddItemForm = (props: AddItemFormsType) => {
+export const AddItemForm = memo((props: AddItemFormsType) => {
 
 	const [titleTask, setTitleTask] = useState<string>('')
 	const [error, setError] = useState<string | null>(null)
@@ -46,4 +46,6 @@ export const AddItemForm = (props: AddItemFormsType) => {
 			{error?.length && <div className={s.errorMessage}>{error}</div>}
 		</>
 	)
-}
+}, (prevProps: Readonly<AddItemFormsType>, nextProps: Readonly<AddItemFormsType>) => {
+	return prevProps.callBack !== nextProps.callBack
+})

@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, memo, useState } from "react"
 import { FilterType, TaskAssocType } from "./App"
 import s from "./Todolist.module.css"
 import { AddItemForm } from "./AddItemForm"
@@ -21,7 +21,7 @@ export type TaskType = {
 	isDone: boolean
 }
 
-export const TodolistRedux = (props: PropsType) => {
+export const TodolistRedux = memo((props: PropsType) => {
 
 	const tasks = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[props.todolistID])
 	const dispatch = useDispatch()
@@ -90,4 +90,10 @@ export const TodolistRedux = (props: PropsType) => {
 			</div>
 		</div>
 	)
-}
+}, (prevProps: Readonly<PropsType>, nextProps: Readonly<PropsType>) => {
+	if (prevProps.todolistID !== nextProps.todolistID) {
+		return true
+	} else {
+		return false
+	}
+})
